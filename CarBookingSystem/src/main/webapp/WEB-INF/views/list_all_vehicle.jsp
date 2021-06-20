@@ -17,13 +17,14 @@
 		</c:if>
 		<c:if test="${not empty listVehicle }">
 			<div class="viewport">
-				<table border="2" align="center">
+				<table class="table table-striped" border="2" align="center">
 					<tr>
 						<th>ID</th>
 						<th>Vehicle Name</th>
 						<th>Vehicle Color</th>
 						<th>Vehicle Number</th>
-						<th>Action</th>
+						<th>Delete</th>
+						<th>Update</th>
 					</tr>
 					<c:forEach items="${listVehicle}" var="res">
 						<tr>
@@ -32,7 +33,7 @@
 							<td><c:out value="${res.vColor}" /></td>
 							<td><c:out value="${res.vNumber}" /></td>
 							<td><a href="delete/${res.id}" class="btn btn-outline-danger">Delete</a></td>
-							<td><a href="update/${res.id}" class="btn btn btn-primary">update</a></td>
+							<td><a href="update/${res.id}" class="btn btn btn-primary">Update</a></td>
 					
 						</tr>
 					</c:forEach>

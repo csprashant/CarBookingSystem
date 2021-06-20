@@ -17,7 +17,7 @@
 		</c:if>
 		<c:if test="${not empty listVehicle }">
 			<div class="viewport">
-				<table border="2" align="center">
+				<table class="table table-striped" border="2" align="center">
 					<tr>
 						<th>ID</th>
 						<th>Vehicle Name</th>

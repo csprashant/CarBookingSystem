@@ -15,7 +15,7 @@
  ||<a href="/add-vehicle" >Add Vehicle</a>||&nbsp;&nbsp;&nbsp;
 ||<a href="/list-all-vehicle" >List All Vehicle</a>||&nbsp;&nbsp;&nbsp;
 ||<a href="/create-reservation-admin">Create Resrvation</a>||&nbsp;&nbsp;&nbsp;
-||<a href="/CarBookingSystem/list-reservation-history" >ResrvatinoHistory</a>||&nbsp;&nbsp;&nbsp;
+||<a href="/list-reservation-history" >ResrvatinoHistory</a>||&nbsp;&nbsp;&nbsp;
 ||<a href="/logout" >Logout</a>||&nbsp;&nbsp;&nbsp; 
 </nav></h1>
 </body>

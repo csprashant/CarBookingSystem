@@ -1,12 +1,11 @@
 package com.nbs.controller;
 
 import java.io.IOException;
-import java.util.List;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -22,8 +21,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.nbs.model.User;
 import com.nbs.model.Vehicle;
+import com.nbs.service.ReservationService;
 import com.nbs.service.UserService;
 import com.nbs.service.VehicleService;
+import com.nbs.vo.ReservationnVo;
 
 @Controller
 public class MainController {
@@ -31,6 +32,8 @@ public class MainController {
 	private UserService userService;
 	@Autowired
 	private VehicleService vehicleService;
+	@Autowired
+	private ReservationService reservationService;
 	HttpSession session = null;
 	User user1 = null;
 
@@ -152,11 +155,14 @@ public class MainController {
 	}
 
 	@PostMapping("/handle-update-user")
-	public String handlerUpdateUser(@ModelAttribute User user, HttpServletRequest request,
+	public String handlerUpdateUser(@Valid @ModelAttribute User user,BindingResult result, HttpServletRequest request,
 			Map<String, Object> map) {
 		if (valid(request)) {
 			userService.saveUser(user);
 			map.put("res", "details updated successfully");
+			user.setEmail("");
+			user.setName("");
+			user.setPassword("");
 			return "update_user";
 		} else {
 			session.invalidate();
@@ -234,11 +240,13 @@ public class MainController {
 		}
 	}
 	@PostMapping("/handle-update-vehicle")
-	public String handlerUpdateVehicle(@ModelAttribute Vehicle vehicle, HttpServletRequest request, Map<String, Object> map) {
-		if(valid(request))
-		{
+	public String handlerUpdateVehicle(@Valid @ModelAttribute Vehicle vehicle,BindingResult result, HttpServletRequest request, Map<String, Object> map) {
+		if(valid(request)){
 		 vehicleService.saveVehicle(vehicle);
 		map.put("res", "details updated successfully");
+		vehicle.setvName("");
+		vehicle.setvColor("");
+		vehicle.setvNumber(null);
 		return "update_vehicle";}
 		else {
 			session.invalidate();
@@ -263,6 +271,60 @@ public class MainController {
 				return "landing";
 		 }
 	}
+	// mapper for creating reservation by user
+		@GetMapping("/reservation/{vehicleId}")
+		public String mappercreateReservation(@PathVariable("vehicleId") int vehicleId, HttpServletRequest request,
+				User user, Model model) throws ServletException, IOException {
+			session = request.getSession(false);
+			user = (User) session.getAttribute("user");
+			model.addAttribute("vehivleID", vehicleId);
+			model.addAttribute("userID", user.getId());
+			model.addAttribute("userName", user.getName());
+			return "create_reservation";
+		}
+		// handler for creating reservation by user
+		@PostMapping(value = "/handle-create-reservation")
+		public String handlerCreateReservation(@ModelAttribute ReservationnVo reservationnVo, Model model)
+				throws Exception {
+			
+			if(new SimpleDateFormat("yyyy-MM-dd").parse(reservationnVo.getFromDate()).compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(reservationnVo.getToDate())) < 0)
+			{
+				boolean res = false;
+				try {
+					res = reservationService.bookReservation(reservationnVo)	;
+					res = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+					res = false;
+				}
+				if (res = true) {
+					model.addAttribute("msg", "Reservation created successfully");
+					return "create_reservation";
+				} else {
+					model.addAttribute("msg", "Reservation failed");
+					return "landing";
+				}
+			}
+			else
+			{model.addAttribute("msg", "from date must be before to date");
+			return "welcomeuser";
+			}
+
+		}
+		
+		// mapper for return jsp page of reservation history
+		@GetMapping("/list-reservation-history")
+		public String mapperListReservatinHistory(HttpServletRequest request, User user, Model model) {
+	
+			if (valid(request)) {
+				request.setAttribute("listreservation", reservationService.fetchAllReservationDetails());
+				return "reservation_history";
+			} else {
+				model.addAttribute("msg", "you dont have  privilege for this page");
+				return "landing";
+			}
+		}
+		
 
 	@GetMapping("/logout")
 	public String logout(@ModelAttribute("User") User user, HttpServletRequest request) throws Exception {

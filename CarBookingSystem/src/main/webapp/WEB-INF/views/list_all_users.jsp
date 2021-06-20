@@ -17,13 +17,15 @@
 		</c:if>
 		<c:if test="${not empty listUser }">
 			<div class="viewport">
-				<table border="2" align="center">
+				<table class="table table-striped" border="2" align="center">
 					<tr>
 						<th>ID</th>
 						<th>Email ID</th>
 						<th>Password</th>
 						<th>Name</th>
 						<th>Type of user</th>
+						<th>Delete</th>
+						<th>Update</th>
 					</tr>
 					<c:forEach items="${listUser}" var="res">
 						<tr>

@@ -14,5 +14,8 @@
 ||<a href="reservation-status" >Reservation Status</a>||&nbsp;&nbsp;&nbsp;</center>
 
 </nav>
+<c:if test="${not empty msg }">
+		<center><font color="green"><c:out value="${msg}" /></font></center>
+	</c:if>
 </body>
 </html>
