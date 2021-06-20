@@ -18,33 +18,41 @@ public class UserService {
 	public UserService(UserRepository repository) {
 		this.repository = repository;
 	}
-/** Servoce layer method void saveUSer() 
- * to save single user details into database*/
+
+	/**
+	 * Servoce layer method void saveUSer() to save single user details into
+	 * database
+	 */
 	public void saveUser(User user) {
 		user.setType(2);
 		user.setUpdated(new Timestamp(new Date().getTime()));
 		repository.save(user);
 	}
-	/** Service layer method  List<User> getAllUserInfo() 
-	 * returns all user from the data base table */
+
+	/**
+	 * Service layer method List<User> getAllUserInfo() returns all user from the
+	 * data base table
+	 */
 	public List<User> getAllUserInfo() {
-		List<User> listUser=(List<User>)repository.findAll();
-		return listUser;	
+		List<User> listUser = (List<User>) repository.findAll();
+		return listUser;
 	}
-		public User getUserInfo(Integer userId)
-		{	Optional<User> user = repository.findById(userId);
-			return user.get();
-		}
-	
-	/** Service layer method  void deleteUser(int id)() 
-	 * deletes single  user from the data base table */
-	public void deleteUser(Integer userId)
-	{
+
+	public User getUserInfo(Integer userId) {
+		Optional<User> user = repository.findById(userId);
+		return user.get();
+	}
+
+	/**
+	 * Service layer method void deleteUser(int id)() deletes single user from the
+	 * data base table
+	 */
+	public void deleteUser(Integer userId) {
 		repository.deleteById(userId);
 	}
 
+	public User login(String emailId, String password) {
+		return repository.findByEmailAndPassword(emailId, password);
+	}
 
-	
-	
-	
 }
