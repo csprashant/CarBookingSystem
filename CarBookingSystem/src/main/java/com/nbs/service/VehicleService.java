@@ -28,7 +28,7 @@ public class VehicleService {
 	}
 
 	/**
-	 *	 Returns all vehicle details
+	 *  Returns all vehicle details
 	 *@return retruns List<Vehicle> List of vehicles 
 	 */
 	public List<Vehicle> getAllVehicleInfo() {
