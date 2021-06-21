@@ -11,6 +11,7 @@ import com.nbs.model.User;
 import com.nbs.repository.UserRepository;
 
 @Service
+
 public class UserService {
 
 	private final UserRepository repository;
@@ -20,8 +21,8 @@ public class UserService {
 	}
 
 	/**
-	 * Servoce layer method void saveUSer() to save single user details into
-	 * database
+	 * save a new User class object
+	 * @param user User class object
 	 */
 	public void saveUser(User user) {
 		user.setType(2);
@@ -30,27 +31,35 @@ public class UserService {
 	}
 
 	/**
-	 * Service layer method List<User> getAllUserInfo() returns all user from the
-	 * data base table
+	 *  Returns all User details
+	 *@return returns List<User> List contains Users 
 	 */
 	public List<User> getAllUserInfo() {
 		List<User> listUser = (List<User>) repository.findAll();
 		return listUser;
 	}
-
+	/**
+ 	*Returns single User class object
+ 	*@param userId  A Integer value represents userId 
+ */
 	public User getUserInfo(Integer userId) {
 		User user = repository.findById(userId).get();
 		return user;
 	}
 
 	/**
-	 * Service layer method void deleteUser(int id)() deletes single user from the
-	 * data base table
-	 */
+	*	Deletes single User
+	*@param vehicleId  a Integer value represents userId
+	*/
 	public void deleteUser(Integer userId) {
 		repository.deleteById(userId);
 	}
-
+	/**
+	 * checks the correct user for username and password
+	 * @param emailId	 emailid of the user
+	 * @param password password of the user
+	 * @return	User object if username and password matched
+	 */
 	public User login(String emailId, String password) {
 		return repository.findByEmailAndPassword(emailId, password);
 	}

@@ -42,7 +42,7 @@ public class MainController {
 
 		return "login";
 	}
-
+	
 	@GetMapping("/welcome")
 	public String showWelcome(HttpServletRequest request, Map<String, Object> m) {
 
@@ -311,6 +311,52 @@ public class MainController {
 			}
 
 		}
+		
+		// mapper for creating reservation by user
+				@GetMapping("/reservation-admin/{vehicleId}")
+				public String mappercreateReservationByAdmin(@PathVariable("vehicleId") int vehicleId, HttpServletRequest request,
+						User user, Model model) throws ServletException, IOException {
+					session = request.getSession(false);
+					user = (User) session.getAttribute("user");
+					model.addAttribute("vehivleID", vehicleId);
+		
+					return "create_reservation_admin";
+				}
+
+				// handler for creating reservation by user
+				@PostMapping( "/handle-create-reservation-admin")
+				public String handlerCreateReservationByadmin(@ModelAttribute ReservationnVo reservationnVo, Model model)
+						throws Exception {
+
+					if(new SimpleDateFormat("yyyy-MM-dd").parse(reservationnVo.getFromDate()).compareTo(new SimpleDateFormat("yyyy-MM-dd").parse(reservationnVo.getToDate())) < 0)
+					{
+						boolean res = false;
+						try {
+							System.out.println(reservationnVo.getFromDate());
+							res = reservationService.bookReservation(reservationnVo);
+							res = true;
+						} catch (Exception e) {
+							e.printStackTrace();
+							res = false;
+						}
+						if (res = true) {
+							model.addAttribute("msg", "Reservation created successfully");
+							return "create_reservation_admin";
+						} else {
+							
+							model.addAttribute("msg", "Reservation failed");
+							return "landing";
+						}
+
+					}
+					else
+					{
+						model.addAttribute("msg", "Error :  From date must be before to date");
+						
+						
+						return "welcome";
+					}
+				}
 		
 		// mapper for return jsp page of reservation history
 		@GetMapping("/list-reservation-history")

@@ -28,6 +28,7 @@
 						<th>Update</th>
 					</tr>
 					<c:forEach items="${listUser}" var="res">
+					<c:if test="${res.id!=101 }">
 						<tr>
 							<td>UID0X1015U<c:out value="${res.id}" /></td>
 							<td><c:out value="${res.email}" /></td>
@@ -51,6 +52,7 @@
 							<td><a href="updateuser/${res.id}" class="btn btn btn-primary">update</a></td>
 					
 						</tr>
+						</c:if>
 					</c:forEach>
 				</table>
 				<h3 align="center"><a href="/welcome"

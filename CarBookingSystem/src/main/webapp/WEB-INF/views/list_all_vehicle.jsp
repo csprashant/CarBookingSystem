@@ -25,6 +25,7 @@
 						<th>Vehicle Number</th>
 						<th>Delete</th>
 						<th>Update</th>
+						<th>Reservation</th>
 					</tr>
 					<c:forEach items="${listVehicle}" var="res">
 						<tr>
@@ -34,6 +35,7 @@
 							<td><c:out value="${res.vNumber}" /></td>
 							<td><a href="delete/${res.id}" class="btn btn-outline-danger">Delete</a></td>
 							<td><a href="update/${res.id}" class="btn btn btn-primary">Update</a></td>
+							<td><a href="reservation-admin/${res.id}" class="btn btn btn-primary">Create Reservation</a></td>
 					
 						</tr>
 					</c:forEach>
